@@ -9,20 +9,9 @@
        Simulate either Shortest Job First (SJF) or Priority Scheduling.
 *
 * 
-*FUNCTIONS USED:
-*
+*FUNCTIONS USED: time, dictionarys.
 *H'''
-from tabulate import tabulate
-
-ready_queue = [] # stores the processes and
-listofprocess = ['a','b','c'] 
-performed_Tasks = [] # add dequed tasks here after removing from queu
-time = 0
-
-print("Current queue", ready_queue)
-print("current process: , Time till completion", listofprocess, time)
-print("List of processes: ")
-
+# notes from class
 '''list all the process to the user, supplement some into the queue, and tll the user
 to process x to begin
 the queue will execute the processes based on the smalles affiliated burst time
@@ -37,10 +26,32 @@ display like:
 [current queue]
 currently executing :[process | timex1]
 [next: process | timex2]
-[third: process | timex3]
+[third: process | timex3]'''
 
+from tabulate import tabulate
+import time
+import sys
 
-'''
+'''gettingkeyss = lxTerm()
+gettingkeyss.getch() '''
+
+ready_queue = [] # stores the processes and affiliated burst time
+listofprocesses = {
+       'a' : 5,
+       'b' : 6,
+       'c' : 2,
+       'd' : 7,
+       'e' : 1,
+       'f' : 10,
+       'g' : 8
+       } 
+
+performed_Tasks = [] # add dequed tasks here after removing from queu
+burst = listofprocesses.values()
+
+print("Current queue", ready_queue)
+print("current process: , Time till completion", listofprocesses.values(), time)
+print("List of processes: ")
 
 # burst cycle associated 
 
@@ -52,11 +63,13 @@ print("(X) to Exit the program")
 userinput = input("Please enter your choice\n")
 print(userinput)
 
-
 #printing tables
+def print_table_struct():
+       headers = ["Process", "Burst Time"]
+       for key, value in listofprocesses.items():   
+              print(tabulate([["%s" % listofprocesses.keys, "%s"% listofprocesses.values()], ["value3", "value4"],["value5", "value6"],], headers=headers, tablefmt="grid"))
 
-table = tabulate([["value1", "value2"], ["value3", "value4"]], ["column 1", "column 2"], tablefmt="grid")
-print(table)
+
 
 
 
