@@ -35,7 +35,9 @@ import sys
 '''gettingkeyss = lxTerm()
 gettingkeyss.getch() '''
 
-ready_queue = [] # stores the processes and affiliated burst time
+active_queue = [
+       
+] # stores the processes and affiliated burst time
 listofprocesses = {
        'a' : 5,
        'b' : 6,
@@ -49,27 +51,37 @@ listofprocesses = {
 performed_Tasks = [] # add dequed tasks here after removing from queu
 burst = listofprocesses.values()
 
-print("Current queue", ready_queue)
+print("Current queue", active_queue)
 print("current process: , Time till completion", listofprocesses.values(), time)
 print("List of processes: ")
 
-# burst cycle associated 
-
 
 # catching user inputs
-print("(E) to execute the next Process in the Ready Queue.")
+print("(E) to start executing the queue.")
 print("(A) to Add a process in the Ready Queue")
 print("(X) to Exit the program")
 userinput = input("Please enter your choice\n")
-print(userinput)
+print("Your choice was: %s" % userinput)
 
-#printing tables
-def print_table_struct():
-       headers = ["Process", "Burst Time"]
-       for key, value in listofprocesses.items():   
-              print(tabulate([["%s" % listofprocesses.keys, "%s"% listofprocesses.values()], ["value3", "value4"],["value5", "value6"],], headers=headers, tablefmt="grid"))
+#functions to print various tables
+def print_process_table():
+       headers = ["Index", "Process", "Burst Time"]
+       table = [[key.upper(), value] for key, value in listofprocesses.items()]
+       print('\n',tabulate(table, showindex=True, headers=headers, tablefmt="pretty"))
+
+def print_queue_table():
+       headers = ["Index","Current Process", "Time Remaining"]
+       table = [[key, value] for key, value in listofprocesses.items()]
+       print('\n',tabulate(table, showindex=True headers=headers, tablefmt="pretty"))
+
+def print_completed_table():
+       headers = ["Completed Process"]
+       table = [[key.upper()] for key in listofprocesses.items()]
+       print('\n',tabulate(table, headers=headers, tablefmt="pretty"))
 
 
-
+#run the program here
+if __name__ == '__main__' :
+       print_process_table()
 
 

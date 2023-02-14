@@ -1,1 +1,2 @@
-istofprocesses.keys()
+ Remaining"]
+       table = [[key, value] for key, val
