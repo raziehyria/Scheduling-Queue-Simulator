@@ -1,87 +1,128 @@
 '''*H
 * AUTHOR :   Razie Hyria        START DATE :    FEB 8th 2023
-* FILENAME :        Simulate Process Scheduling          
+* FILENAME :        Simulate SJF Process Scheduling          
 * COURSE NAME:      CMPSC 472 Section 001: Operating Systems
 * SEMESTER:         SPRING 2023
 *
 * DESCRIPTION :
 *      Write a program to simulate one of two Process Scheduling algorithms
        Simulate either Shortest Job First (SJF) or Priority Scheduling.
-*
 * 
-*FUNCTIONS USED: time, dictionarys.
+*FUNCTIONS USED: time, dictionarys, queue, tabulate.
+* 
+* def burst_time(burst) Helper function used to deincriment and display the given burst time of a process
+* borrowed from Stack overflow: \https://stackoverflow.com/a/66940953/17628672
 *H'''
-# notes from class
-'''list all the process to the user, supplement some into the queue, and tll the user
-to process x to begin
-the queue will execute the processes based on the smalles affiliated burst time
-for process in list of queue, chose the next smallest burst time to execute, and alert user
-control the burst time with wait/sleep and wait for it to get to 0 before moving to next process
-
-while the queue isnt done exectuting all the processes, the user may add another process from the list
-if queue runs out, the list of processes is exaushted or user hits x, exit the program.
-
-display like:
-[list of process | time]  [list completed processes]
-[current queue]
-currently executing :[process | timex1]
-[next: process | timex2]
-[third: process | timex3]'''
 
 from tabulate import tabulate
 import time
 import sys
 
-'''gettingkeyss = lxTerm()
-gettingkeyss.getch() '''
-
-active_queue = [
-       
-] # stores the processes and affiliated burst time
-listofprocesses = {
-       'a' : 5,
-       'b' : 6,
-       'c' : 2,
-       'd' : 7,
-       'e' : 1,
-       'f' : 10,
-       'g' : 8
-       } 
-
-performed_Tasks = [] # add dequed tasks here after removing from queu
-burst = listofprocesses.values()
-
-print("Current queue", active_queue)
-print("current process: , Time till completion", listofprocesses.values(), time)
-print("List of processes: ")
+'''
+***************************************************************
+* declaring all the variables and data structures we will use *
+***************************************************************
+'''
 
 
-# catching user inputs
-print("(E) to start executing the queue.")
-print("(A) to Add a process in the Ready Queue")
-print("(X) to Exit the program")
-userinput = input("Please enter your choice\n")
-print("Your choice was: %s" % userinput)
+listofprocesses = { # the entire catalog of processes
+       'A' : 5,
+       'B' : 6,
+       'C' : 2,
+       'D' : 7,
+       'E' : 1,
+       'F' : 10,
+       'G' : 3 } 
 
-#functions to print various tables
+active_queue = { # supplemented active queue
+       'G' : 3,
+       'F' : 10,
+       'A' : 5} 
+
+completed_Tasks = [] # stores completed tasks
+
+#userinput = input("Please enter your choice\n")
+
+
+'''
+***************************
+* Varius Helper functions *
+***************************
+'''
+
+def add_to_queue(process): # function used to store 
+       active_queue[process] = listofprocesses[process]
+
+def get_next_in_queue(dict): # a functin used to get the next shortest (value) sjf task in the queue
+       next_value = min(d, key=d.get) # uses the min function to iterate dict to find and store the next value min task
+       return next_value # returns the task
+
+def check_status(task):
+       if task in completed_Tasks or task not in listofprocesses:
+              return False
+       else:
+              return True
+
+def burst_time(burst):
+       for i in range(burst,0,-1): # deincrimenting starting from the burst value
+              print(f"{i}", end="\r", flush=True) # displaying changing burst value live inline w/ output
+              time.sleep(1) # using the sleep function
+
+'''
+*************************************
+* functions to print various tables *
+*************************************
+'''
+
 def print_process_table():
-       headers = ["Index", "Process", "Burst Time"]
-       table = [[key.upper(), value] for key, value in listofprocesses.items()]
-       print('\n',tabulate(table, showindex=True, headers=headers, tablefmt="pretty"))
+       headers = ["Process Name", "Burst Time"] # store header names
+       table = [[key, value] for key, value in listofprocesses.items()] # iterate over dict key/values and store as tuple for table
+       print('\nProcesses Catalog:\n',tabulate(table, headers=headers, tablefmt="pretty"),'\n')
 
 def print_queue_table():
-       headers = ["Index","Current Process", "Time Remaining"]
-       table = [[key, value] for key, value in listofprocesses.items()]
-       print('\n',tabulate(table, showindex=True headers=headers, tablefmt="pretty"))
+       sort_dict = {k: v for k, v in sorted(active_queue.items(), key=lambda item: item[1])}
+       headers = ["Order","Next Processes", "Time Remaining"]
+       table = [[key, value] for key, value in sort_dict.items()]
+       print('\nQueue:\n',tabulate(table, showindex=True, headers=headers, tablefmt="pretty"),'\n')
 
 def print_completed_table():
-       headers = ["Completed Process"]
-       table = [[key.upper()] for key in listofprocesses.items()]
-       print('\n',tabulate(table, headers=headers, tablefmt="pretty"))
+       headers = ["Completed Processes"]
+       table = [[item] for item in completed_Tasks]
+       print('\n',tabulate(table, headers=headers, tablefmt="pretty"),'\n')
+
+'''
+************************************************
+* Function to start the SJF Processes Program *
+************************************************
+'''
+print("(A) to Add a process in the Ready Queue")
+
+def SJF():
+       isRunning = True
+       print(" Welcome to the SJF Queue Simulation!")
+
+       while isRunning:
+              print("(E) to start executing the queue, or X to exit.")
+
+             userInput = input() 
+              
+       
+
+
+       pass
+
 
 
 #run the program here
 if __name__ == '__main__' :
        print_process_table()
+       add_to_queue('b')
+       print_queue_table()
+       print_completed_table()
+       #print("Current process executing: ",burst_time(7))
+
+       
+
+
 
 
