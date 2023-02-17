@@ -119,40 +119,41 @@ def SJF():
         print_queue_table()
 
         while len(active_queue) > 0:
-
+            #for item in active_queue
             if msvcrt.kbhit(): # if a key was hit
                 chrt = msvcrt.getch() #store it
                 match chrt: # execute commands depending on the key hit
+                    
                     case 'x':
+                        time.sleep(5)
                         print("You pressed: %s. Exiting the Program" % chrt)
                         print_completed_table()
                         isRunning = False
                     case 'a':
-                        print("Which process would you like to add?"  )
-                        usrinp = input("Enter process from list above")
+                        time.sleep(5)
+                        usrinp = input("Which process would you like to add?")
                         if check_status(usrinp):
                             add_to_queue(usrinp)
                             print_queue_table
                             break
-                        else:
-                            print("That process is either completed or doesnt eexist!")
-                            break
                     case _: # default case
                         break
-            #for item in active_queue:
-            minval = get_next_in_queue(active_queue) # find next smallest key value
-            print("\nCurrent process on CPU: %s, eta: %d \ne "% (minval,active_queue[minval])) # display current task on cpu with burst time
-            burst_time(active_queue[minval])
-            print("\nProcess %s Completed! Moving to next task...")
+
+            minval = get_next_in_queue(active_queue) # find next smallest key valuee
+            print("\nCurrent process on CPU: %s, eta: %d"% (minval,active_queue[minval]), burst_time(active_queue[minval])) # display current task on cpu with burst time
+            print("\nProcess %s  Completed! Moving to next task..."% (minval))
             active_queue.pop(minval) #  after burst , pop that min key from dict into completed tasks
             completed_Tasks.append(minval)
+            time.sleep(5)
+                
             
-        print("Queue is complete! Program Exiting")   
+        print("Queue is complete! Program Exiting") 
+        print_completed_table()  
         isRunning = False
                       
                 
 
-
 # run the program here
 if __name__ == '__main__':
     SJF()
+    
