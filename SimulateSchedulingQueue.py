@@ -72,7 +72,9 @@ def burst_time(burst):
         print(f"{i}", end="\r", flush=True)  # displaying changing burst value live inline w/ output
         time.sleep(1)  # using the sleep function
 
-
+def move (y, x):
+    print("\033[%d;%dH" % (y, x))
+    
 '''
 *************************************
 * functions to print various tables *
@@ -111,42 +113,39 @@ def SJF():
     print("Press (e) to start executing the queue! The program will until then...")
     keyboard.wait("e")  # waits for the user to enter proper key before starting
     isRunning = True  # start program
+    print_queue_table()
     
     while isRunning:
         print("Add items from the process catalog to the queue before all the queue is finished")
         print_process_table()
         print("Press (a) to Add a process in the Ready Queue")
-        print_queue_table()
 
         while len(active_queue) > 0:
             #for item in active_queue
-            if msvcrt.kbhit(): # if a key was hit
+            while msvcrt.kbhit(): # if a key was hit
                 chrt = msvcrt.getch() #store it
-                match chrt: # execute commands depending on the key hit
-                    
-                    case 'x':
-                        time.sleep(5)
+                match chrt: # execute commands depending on the key hite
+                    case b'x':
                         print("You pressed: %s. Exiting the Program" % chrt)
                         print_completed_table()
-                        isRunning = False
-                    case 'a':
-                        time.sleep(5)
+                        exit()
+                    case b'a':
                         usrinp = input("Which process would you like to add?")
                         if check_status(usrinp):
                             add_to_queue(usrinp)
-                            print_queue_table
+                            print("Process %s has been added!" % usrinp)
+                            print_queue_table()
                             break
                     case _: # default case
+                        print("\n %s Invalid!...\n"% (chrt))
                         break
-
+            
             minval = get_next_in_queue(active_queue) # find next smallest key valuee
             print("\nCurrent process on CPU: %s, eta: %d"% (minval,active_queue[minval]), burst_time(active_queue[minval])) # display current task on cpu with burst time
-            print("\nProcess %s  Completed! Moving to next task..."% (minval))
+            print("\nProcess %s  Completed! Moving to next task...\n"% (minval), flush=True)
             active_queue.pop(minval) #  after burst , pop that min key from dict into completed tasks
             completed_Tasks.append(minval)
-            time.sleep(5)
-                
-            
+                   
         print("Queue is complete! Program Exiting") 
         print_completed_table()  
         isRunning = False
