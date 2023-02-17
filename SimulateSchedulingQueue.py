@@ -105,61 +105,54 @@ def print_completed_table():
 * Function to start the SJF Processes Program *
 ************************************************
 '''
-print("(A) to Add a process in the Ready Queue")
-
 
 def SJF():
     print(" Welcome to the SJF Queue Simulation!")
-    print("Press (E) to start executing the queue! The program will until then...")
+    print("Press (e) to start executing the queue! The program will until then...")
     keyboard.wait("e")  # waits for the user to enter proper key before starting
-
     isRunning = True  # start program
+    
     while isRunning:
-        print("The Program has started! Press X to exit at any time.")
-        print("The Queue will start executing shortly...")
-        print(
-            "Feel free to Add items from the process catalog to the queue once it starts, and before all the "
-            "processes have finished")
+        print("Add items from the process catalog to the queue before all the queue is finished")
+        print_process_table()
         print("Press (a) to Add a process in the Ready Queue")
+        print_queue_table()
 
         while len(active_queue) > 0:
 
-            while msvcrt.kbhit():
-                chrt = msvcrt.getch()
-                match chrt:
+            if msvcrt.kbhit(): # if a key was hit
+                chrt = msvcrt.getch() #store it
+                match chrt: # execute commands depending on the key hit
                     case 'x':
                         print("You pressed: %s. Exiting the Program" % chrt)
+                        print_completed_table()
                         isRunning = False
                     case 'a':
-                        print("You pressed: %s. Which process would you like to add?" % chrt)
-                        print_process_table()
+                        print("Which process would you like to add?"  )
                         usrinp = input("Enter process from list above")
                         if check_status(usrinp):
                             add_to_queue(usrinp)
+                            print_queue_table
                             break
                         else:
-                            print("That process is either completed or doesnt exist!")
+                            print("That process is either completed or doesnt eexist!")
                             break
-                    case _:
-                        print("Invalid character! try again")
+                    case _: # default case
                         break
-        #  updated queu table w user jawn
-        # find next smallest key value
-        # display current task on cpu with burst time
-        #  after burst , pop that min key from dict
-        # print
-        # print updated
-        for item in active_queue:
-            print_queue_table()
-            print("Current process executing: ",burst_time(7))
-
-
-
+            #for item in active_queue:
+            minval = get_next_in_queue(active_queue) # find next smallest key value
+            print("\nCurrent process on CPU: %s, eta: %d \ne "% (minval,active_queue[minval])) # display current task on cpu with burst time
+            burst_time(active_queue[minval])
+            print("\nProcess %s Completed! Moving to next task...")
+            active_queue.pop(minval) #  after burst , pop that min key from dict into completed tasks
+            completed_Tasks.append(minval)
+            
+        print("Queue is complete! Program Exiting")   
+        isRunning = False
+                      
+                
 
 
 # run the program here
 if __name__ == '__main__':
-    print_queue_table()
     SJF()
-    # print("Current process executing: ",burst_time(7))
-    # userinput = input("Please enter your choice\n")
