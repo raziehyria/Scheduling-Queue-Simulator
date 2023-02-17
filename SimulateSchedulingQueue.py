@@ -150,7 +150,6 @@ def SJF():
         print_completed_table()  
         isRunning = False
                       
-                
 
 # run the program here
 if __name__ == '__main__':
