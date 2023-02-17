@@ -125,16 +125,18 @@ def SJF():
             while msvcrt.kbhit(): # if a key was hit
                 chrt = msvcrt.getch() #store it
                 match chrt: # execute commands depending on the key hite
-                    case b'x':
+                    case b'x' | b'X':
                         print("You pressed: %s. Exiting the Program" % chrt)
                         print_completed_table()
                         exit()
-                    case b'a':
+                    case b'a'| b'A':
                         usrinp = input("Which process would you like to add?")
                         if check_status(usrinp):
                             add_to_queue(usrinp)
                             print("Process %s has been added!" % usrinp)
                             print_queue_table()
+                        else:
+                            print("Invalid process or already completed/in queue!")
                             break
                     case _: # default case
                         print("\n %s Invalid!...\n"% (chrt))
